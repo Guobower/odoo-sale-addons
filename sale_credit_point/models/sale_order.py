@@ -30,9 +30,9 @@ class SaleOrder(models.Model):
     @api.multi
     def action_confirm(self):
         """Check credit before confirmation, update credit if check passed."""
-        for sale in self:
-            install_module = tools.config.get('init')
-            if 'sale_credit_point' not in install_module:
+        install_module = tools.config.get('init')
+        if 'sale_credit_point' not in install_module:
+            for sale in self:
                 sale.credit_point_check()
                 sale.partner_id.credit_point_decrease(
                     sale.amount_total, comment=self.credit_point_decrease_msg)
